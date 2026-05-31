@@ -2,186 +2,173 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1366">
 <title>easyMaths - Michel H'R</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --green-dark: #6a7c2a;
-  --text-dark: #2a2a2a;
-  --text-mid: #444;
-  --silver: #c0c0c0;
-  --marble-bg: #f0eeea;
-}
-body {
-  background: var(--marble-bg);
-  font-family: 'Montserrat', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
+
+/* Fixed canvas: exactly 1366x2450px — no scroll */
+html, body {
+  width: 1366px;
+  height: 2450px;
+  overflow: hidden;
+  background: #f0eeea;
   position: relative;
 }
+
+/* Subtle marble gradient */
 body::before {
-  content: ''; position: fixed; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background:
-    linear-gradient(135deg, rgba(200,200,195,0.12) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(200,200,195,0.13) 0%, transparent 45%),
     linear-gradient(45deg, transparent 55%, rgba(210,207,200,0.10) 100%);
   pointer-events: none; z-index: 0;
 }
 
-/* ── BRANCHES ──
-   Fixed to viewport. z-index 0 = always behind page content.
-   NO overflow:hidden anywhere near them.
-   TR: top-right corner, small
-   BL: bottom-left corner, same size — page is mobile-tall so bottom is far down
-*/
+/* ── BRANCHES: absolute positioned, z-index 0, behind everything ── */
 .branch {
-  position: fixed;
+  position: absolute;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 .branch-tr {
   top: 0;
   right: 0;
-  width: 145px;
-  /* subtle breathing animation — position stays constant */
+  width: 310px;
   animation: breatheR 6s ease-in-out infinite;
   transform-origin: top right;
 }
 .branch-bl {
   bottom: 0;
   left: 0;
-  width: 145px;
+  width: 310px;
   animation: breatheL 7s ease-in-out infinite;
   transform-origin: bottom left;
 }
-.branch img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-.branch-bl img {
-  transform: rotate(180deg);
-}
-/* Very subtle scale breathe — keeps position fixed, just gentle life */
+.branch img { width: 100%; height: auto; display: block; }
+.branch-bl img { transform: rotate(180deg); }
+
 @keyframes breatheR {
   0%,100% { transform: scale(1) rotate(0deg); }
-  50%      { transform: scale(1.015) rotate(0.8deg); }
+  50%      { transform: scale(1.01) rotate(0.6deg); }
 }
 @keyframes breatheL {
   0%,100% { transform: scale(1) rotate(0deg); }
-  50%      { transform: scale(1.015) rotate(-0.8deg); }
+  50%      { transform: scale(1.01) rotate(-0.6deg); }
 }
 
-/* ── PAGE ── */
+/* ── PAGE CONTENT: z-index 2 above branches ── */
 .page {
-  position: relative;
-  z-index: 1;
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 32px 72px;
+  /* horizontal padding keeps content away from branch area */
+  padding: 0 160px;
 }
 
 /* ── LOGO ── */
 .logo-section {
-  margin-top: 50px;
+  margin-top: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
   animation: fadeDown 0.9s ease both;
-  /* extra padding so float animation doesn't get clipped by viewport */
-  padding: 8px 0 6px;
 }
 .logo-img {
-  width: 215px;
+  width: 390px;
   height: auto;
   display: block;
-  filter: drop-shadow(0 3px 14px rgba(100,130,20,0.16));
+  filter: drop-shadow(0 6px 22px rgba(100,130,20,0.18));
   animation: logoFloat 4s ease-in-out infinite;
 }
 @keyframes logoFloat {
-  0%,100% { transform: translateY(0px); }
-  50%      { transform: translateY(-7px); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
 }
 
 /* ── NAME ── */
 .name-section {
-  margin-top: 30px;
+  margin-top: 55px;
   text-align: center;
   animation: fadeUp 0.9s 0.25s ease both;
 }
-
-/* "Michel H'R" — Playfair Display, large, dark */
 .name-main {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(44px, 11vw, 60px);
+  font-size: 96px;
   font-weight: 400;
-  color: var(--text-dark);
-  letter-spacing: -0.5px;
+  color: #2a2a2a;
+  letter-spacing: -1px;
   line-height: 1.05;
 }
-
-/* "clases de matematica" — Great Vibes calligraphic script, olive green */
 .name-script {
   font-family: 'Great Vibes', cursive;
-  font-size: clamp(32px, 8vw, 42px);
+  font-size: 72px;
   font-weight: 400;
-  color: var(--green-dark);
-  line-height: 1.25;
-  margin-top: 2px;
+  color: #6a7c2a;
+  line-height: 1.3;
+  margin-top: 4px;
   animation: fadeUp 0.9s 0.4s ease both;
 }
 
 /* ── DIVIDER ── */
 .divider {
-  width: 110px;
-  margin: 18px 0 22px;
+  width: 200px;
+  margin: 40px 0 50px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
   animation: fadeUp 0.9s 0.45s ease both;
 }
-.divider-line { flex: 1; height: 0.5px; background: #b8b5ae; }
-.divider-dot  { width: 5px; height: 5px; border-radius: 50%; background: #9dc43b; box-shadow: 0 0 5px rgba(157,196,59,0.35); }
+.divider-line { flex: 1; height: 1px; background: #c0bdb8; }
+.divider-dot  {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #9dc43b;
+  box-shadow: 0 0 8px rgba(157,196,59,0.4);
+}
 
 /* ── BUTTONS ── */
-.buttons-grid { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+.buttons-grid {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
 
 .btn-wrapper { position: relative; transition: transform 0.25s ease; }
-.btn-wrapper:hover  { transform: translateY(-2px); }
+.btn-wrapper:hover  { transform: translateY(-3px); }
 .btn-wrapper:active { transform: scale(0.99); }
 
-/* Glitter/dotted border frame */
 .btn-frame {
-  position: absolute; inset: -5px; border-radius: 3px;
+  position: absolute; inset: -8px; border-radius: 4px;
   background: transparent; pointer-events: none; overflow: hidden;
 }
 .btn-frame::before {
   content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle, rgba(170,170,170,0.88) 1px, transparent 1px),
-    radial-gradient(circle, rgba(192,192,192,0.55) 1px, transparent 1px);
-  background-size: 4px 4px, 7px 7px;
-  background-position: 0 0, 2px 2px;
+    radial-gradient(circle, rgba(168,168,168,0.88) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(190,190,190,0.55) 1.5px, transparent 1.5px);
+  background-size: 6px 6px, 11px 11px;
+  background-position: 0 0, 3px 3px;
   border-radius: inherit;
   animation: shimmer 3s linear infinite;
   opacity: 0.72;
 }
 @keyframes shimmer {
-  0%   { background-position: 0 0, 2px 2px;   opacity: 0.48; }
+  0%   { background-position: 0 0, 3px 3px;   opacity: 0.48; }
   50%  { opacity: 1; }
-  100% { background-position: 4px 4px, 6px 6px; opacity: 0.48; }
+  100% { background-position: 6px 6px, 9px 9px; opacity: 0.48; }
 }
+
 .btn-main {
   display: flex; align-items: center; justify-content: center;
-  width: 100%; padding: 16px 24px;
+  width: 100%; padding: 32px 40px;
   background: rgba(255,255,255,0.80);
-  border: 1.5px solid rgba(195,192,188,0.55);
-  border-radius: 2px;
+  border: 2px solid rgba(195,192,188,0.55);
+  border-radius: 3px;
   cursor: pointer; position: relative; z-index: 1;
   backdrop-filter: blur(6px);
   transition: background 0.25s, border-color 0.25s;
@@ -194,28 +181,26 @@ body::before {
   background: linear-gradient(90deg, transparent, rgba(157,196,59,0.07), transparent);
   transition: left 0.45s ease;
 }
-.btn-wrapper:hover .btn-main::after  { left: 150%; }
+.btn-wrapper:hover .btn-main::after { left: 150%; }
 .btn-wrapper:hover .btn-main { background: rgba(255,255,255,0.94); border-color: rgba(157,196,59,0.32); }
 
 .btn-text {
   font-family: 'Montserrat', sans-serif;
-  font-size: 12.5px; font-weight: 600;
-  letter-spacing: 3.5px; color: var(--text-dark);
+  font-size: 22px; font-weight: 600;
+  letter-spacing: 6px; color: #2a2a2a;
   text-transform: uppercase;
 }
-/* corner accents */
 .btn-corner {
-  position: absolute; width: 9px; height: 9px;
-  border-color: var(--silver); border-style: solid; z-index: 2;
+  position: absolute; width: 16px; height: 16px;
+  border-color: #c0c0c0; border-style: solid; z-index: 2;
   transition: border-color 0.25s;
 }
 .btn-wrapper:hover .btn-corner { border-color: #9dc43b; }
-.btn-corner.tl { top:2px; left:2px;   border-width: 1.5px 0 0 1.5px; }
-.btn-corner.tr { top:2px; right:2px;  border-width: 1.5px 1.5px 0 0; }
-.btn-corner.bl { bottom:2px; left:2px;  border-width: 0 0 1.5px 1.5px; }
-.btn-corner.br { bottom:2px; right:2px; border-width: 0 1.5px 1.5px 0; }
+.btn-corner.tl { top:3px; left:3px;   border-width: 2px 0 0 2px; }
+.btn-corner.tr { top:3px; right:3px;  border-width: 2px 2px 0 0; }
+.btn-corner.bl { bottom:3px; left:3px;  border-width: 0 0 2px 2px; }
+.btn-corner.br { bottom:3px; right:3px; border-width: 0 2px 2px 0; }
 
-/* stagger fade-in */
 .btn-wrapper:nth-child(1) { animation: fadeUp 0.55s 0.60s ease both; }
 .btn-wrapper:nth-child(2) { animation: fadeUp 0.55s 0.70s ease both; }
 .btn-wrapper:nth-child(3) { animation: fadeUp 0.55s 0.80s ease both; }
@@ -224,32 +209,31 @@ body::before {
 
 /* ── SOCIAL ── */
 .social-row {
-  margin-top: 44px;
-  display: flex; align-items: flex-end; justify-content: center; gap: 30px;
+  margin-top: 90px;
+  display: flex; align-items: flex-end; justify-content: center; gap: 60px;
   animation: fadeUp 0.9s 1.05s ease both;
 }
 .social-item {
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
   cursor: pointer; text-decoration: none; transition: transform 0.25s;
 }
-.social-item:hover { transform: translateY(-4px); }
+.social-item:hover { transform: translateY(-6px); }
 .social-icon {
-  width: 50px; height: 50px; border-radius: 50%;
+  width: 96px; height: 96px; border-radius: 50%;
   background: #2e2e2e;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.25s, transform 0.25s;
 }
-.social-item:hover .social-icon { background: var(--green-dark); transform: scale(1.08); }
-.social-icon svg { width: 25px; height: 25px; fill: #fff; }
+.social-item:hover .social-icon { background: #6a7c2a; transform: scale(1.08); }
+.social-icon svg { width: 50px; height: 50px; fill: #fff; }
 .social-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 9.5px; font-weight: 600; letter-spacing: 2px;
-  color: var(--text-mid); text-transform: uppercase;
+  font-size: 18px; font-weight: 600; letter-spacing: 3.5px;
+  color: #444; text-transform: uppercase;
 }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp   { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: none; } }
-@keyframes fadeDown { from { opacity:0; transform: translateY(-18px); } to { opacity:1; transform: none; } }
+@keyframes fadeUp   { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: none; } }
+@keyframes fadeDown { from { opacity:0; transform: translateY(-24px); } to { opacity:1; transform: none; } }
 .ripple {
   position: absolute; border-radius: 50%;
   background: rgba(157,196,59,0.20);
@@ -262,7 +246,7 @@ body::before {
 </head>
 <body>
 
-<!-- BRANCHES: z-index 0, fixed corners, never clip anything -->
+<!-- BRANCHES: z-index 1, absolutely positioned in corners -->
 <div class="branch branch-tr">
   <img src="branch.svg" alt="">
 </div>
@@ -270,27 +254,24 @@ body::before {
   <img src="branch.svg" alt="">
 </div>
 
+<!-- PAGE CONTENT: z-index 2 -->
 <div class="page">
 
-  <!-- LOGO -->
   <div class="logo-section">
     <img class="logo-img" src="logo.svg" alt="easyMaths logo">
   </div>
 
-  <!-- NAME + TAGLINE -->
   <div class="name-section">
     <div class="name-main">Michel H'R</div>
     <div class="name-script">clases de matematica</div>
   </div>
 
-  <!-- DIVIDER -->
   <div class="divider">
     <div class="divider-line"></div>
     <div class="divider-dot"></div>
     <div class="divider-line"></div>
   </div>
 
-  <!-- BUTTONS -->
   <div class="buttons-grid">
     <div class="btn-wrapper"><div class="btn-frame"></div>
       <button class="btn-main" onclick="ripple(event,this)">
@@ -329,7 +310,6 @@ body::before {
     </div>
   </div>
 
-  <!-- SOCIAL -->
   <div class="social-row">
     <a class="social-item" href="#" title="WhatsApp Peru">
       <div class="social-icon">
