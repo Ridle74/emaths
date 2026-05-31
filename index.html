@@ -222,7 +222,7 @@ body {
 
 <!-- MARBLE BACKGROUND: real high-res marble photo, z-index 0 -->
 <div id="marbleBg" style="position:fixed;top:0;left:0;width:1366px;height:100vh;z-index:0;pointer-events:none;overflow:hidden;">
-  <img src="marble_bg.svg" style="width:1366px;height:100vh;object-fit:cover;object-position:center top;display:block;" alt="">
+  <img src="marble_bg.svg" style="width:1366px;height:100vh;object-fit:cover;object-position:center center;display:block;" alt="">
 </div>
 
 <div class="branch branch-tr"><img src="branch.svg" alt=""></div>
@@ -333,12 +333,6 @@ function ripple(e, btn) {
 </script>
 
 
-<script>
-(function(){
-  var bg = document.getElementById('marbleBg');
-  function upd(){ if(bg) bg.style.top = window.scrollY+'px'; }
-  window.addEventListener('scroll', upd, {passive:true});
-})();
-</script>
+
 </body>
 </html>
