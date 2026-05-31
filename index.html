@@ -4,69 +4,76 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>easyMaths - Michel H'R</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --green-dark: #6a8c1e; --text-dark: #2a2a2a;
-  --text-mid: #444; --silver: #c0c0c0; --marble-bg: #f4f3f1;
+  --green-dark: #6a7c2a;
+  --text-dark: #2a2a2a;
+  --text-mid: #444;
+  --silver: #c0c0c0;
+  --marble-bg: #f0eeea;
 }
 body {
   background: var(--marble-bg);
   font-family: 'Montserrat', sans-serif;
-  min-height: 100vh; overflow-x: hidden; position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 body::before {
   content: ''; position: fixed; inset: 0;
   background:
-    linear-gradient(135deg, rgba(200,200,195,0.15) 0%, transparent 40%),
-    linear-gradient(45deg, transparent 60%, rgba(210,207,200,0.12) 100%);
+    linear-gradient(135deg, rgba(200,200,195,0.12) 0%, transparent 45%),
+    linear-gradient(45deg, transparent 55%, rgba(210,207,200,0.10) 100%);
   pointer-events: none; z-index: 0;
 }
 
-/* BRANCHES: z-index 0, strictly behind everything, NO overflow hidden */
+/* ── BRANCHES ──
+   Fixed to viewport. z-index 0 = always behind page content.
+   NO overflow:hidden anywhere near them.
+   TR: top-right corner, small
+   BL: bottom-left corner, same size — page is mobile-tall so bottom is far down
+*/
 .branch {
   position: fixed;
   pointer-events: none;
   z-index: 0;
-  /* NO overflow:hidden so they never clip any other element */
 }
-
-/* TOP-RIGHT branch: small, tucked in top-right corner
-   In reference: ~130px wide, clearly in corner, NOT near logo area */
 .branch-tr {
-  top: -8px;
-  right: -8px;
-  width: 140px;
-  animation: swayR 7s ease-in-out infinite;
+  top: 0;
+  right: 0;
+  width: 145px;
+  /* subtle breathing animation — position stays constant */
+  animation: breatheR 6s ease-in-out infinite;
   transform-origin: top right;
 }
-
-/* BOTTOM-LEFT branch: same size, bottom-left corner */
 .branch-bl {
-  bottom: -8px;
-  left: -8px;
-  width: 140px;
-  animation: swayL 8s ease-in-out infinite;
+  bottom: 0;
+  left: 0;
+  width: 145px;
+  animation: breatheL 7s ease-in-out infinite;
   transform-origin: bottom left;
 }
-
 .branch img {
   width: 100%;
   height: auto;
   display: block;
 }
-/* BL branch: rotate 180deg to mirror into bottom-left corner */
-.branch-bl img { transform: rotate(180deg); }
-
-@keyframes swayR {
-  0%,100%{transform:rotate(0deg)} 40%{transform:rotate(1.5deg)} 70%{transform:rotate(-1deg)}
+.branch-bl img {
+  transform: rotate(180deg);
 }
-@keyframes swayL {
-  0%,100%{transform:rotate(0deg)} 40%{transform:rotate(-1.5deg)} 70%{transform:rotate(1deg)}
+/* Very subtle scale breathe — keeps position fixed, just gentle life */
+@keyframes breatheR {
+  0%,100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.015) rotate(0.8deg); }
+}
+@keyframes breatheL {
+  0%,100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.015) rotate(-0.8deg); }
 }
 
-/* PAGE CONTENT: z-index 1, always above branches */
+/* ── PAGE ── */
 .page {
   position: relative;
   z-index: 1;
@@ -76,119 +83,186 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 28px 70px;
+  padding: 0 32px 72px;
 }
 
-/* LOGO — no overflow hidden anywhere near it */
+/* ── LOGO ── */
 .logo-section {
-  margin-top: 44px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: fadeDown 1s ease both;
-  /* padding ensures the floating animation has room */
-  padding: 10px 0 4px;
+  animation: fadeDown 0.9s ease both;
+  /* extra padding so float animation doesn't get clipped by viewport */
+  padding: 8px 0 6px;
 }
 .logo-img {
-  width: 210px;
+  width: 215px;
   height: auto;
   display: block;
-  /* drop-shadow only, no clip */
-  filter: drop-shadow(0 4px 16px rgba(100,140,30,0.18));
+  filter: drop-shadow(0 3px 14px rgba(100,130,20,0.16));
   animation: logoFloat 4s ease-in-out infinite;
 }
 @keyframes logoFloat {
-  0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-7px); }
 }
 
-/* NAME */
+/* ── NAME ── */
 .name-section {
-  margin-top: 24px;
+  margin-top: 30px;
   text-align: center;
-  animation: fadeUp 1s 0.3s ease both;
+  animation: fadeUp 0.9s 0.25s ease both;
 }
+
+/* "Michel H'R" — Playfair Display, large, dark */
 .name-main {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(38px,9.5vw,54px);
-  font-weight: 400; color: var(--text-dark);
-  letter-spacing: -0.5px; line-height: 1.05;
+  font-size: clamp(44px, 11vw, 60px);
+  font-weight: 400;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.05;
 }
+
+/* "clases de matematica" — Great Vibes calligraphic script, olive green */
 .name-script {
-  font-family: 'Cormorant Garamond', serif; font-style: italic;
-  font-size: clamp(24px,6vw,34px); color: var(--green-dark);
-  line-height: 1.2; margin-top: 4px;
-  animation: scriptReveal 1.2s 0.6s ease both;
-}
-@keyframes scriptReveal {
-  from{opacity:0;transform:translateX(-10px) skewX(-3deg)} to{opacity:1;transform:none}
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(32px, 8vw, 42px);
+  font-weight: 400;
+  color: var(--green-dark);
+  line-height: 1.25;
+  margin-top: 2px;
+  animation: fadeUp 0.9s 0.4s ease both;
 }
 
-/* DIVIDER */
+/* ── DIVIDER ── */
 .divider {
-  width: 120px; margin: 20px 0 24px;
-  display: flex; align-items: center; gap: 8px;
-  animation: fadeUp 1s 0.5s ease both;
+  width: 110px;
+  margin: 18px 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeUp 0.9s 0.45s ease both;
 }
-.divider-line { flex:1; height:0.5px; background:var(--silver); }
-.divider-dot { width:5px; height:5px; border-radius:50%; background:#9dc43b; box-shadow:0 0 6px rgba(157,196,59,0.4); }
+.divider-line { flex: 1; height: 0.5px; background: #b8b5ae; }
+.divider-dot  { width: 5px; height: 5px; border-radius: 50%; background: #9dc43b; box-shadow: 0 0 5px rgba(157,196,59,0.35); }
 
-/* BUTTONS */
-.buttons-grid { width:100%; display:flex; flex-direction:column; gap:14px; }
-.btn-wrapper { position:relative; transition:transform 0.3s ease; }
-.btn-wrapper:hover{transform:translateY(-2px)} .btn-wrapper:active{transform:scale(0.99)}
-.btn-frame { position:absolute; inset:-5px; border-radius:3px; background:transparent; pointer-events:none; overflow:hidden; }
+/* ── BUTTONS ── */
+.buttons-grid { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+
+.btn-wrapper { position: relative; transition: transform 0.25s ease; }
+.btn-wrapper:hover  { transform: translateY(-2px); }
+.btn-wrapper:active { transform: scale(0.99); }
+
+/* Glitter/dotted border frame */
+.btn-frame {
+  position: absolute; inset: -5px; border-radius: 3px;
+  background: transparent; pointer-events: none; overflow: hidden;
+}
 .btn-frame::before {
-  content:''; position:absolute; inset:0;
-  background-image:radial-gradient(circle,rgba(175,175,175,0.9) 1px,transparent 1px),radial-gradient(circle,rgba(195,195,195,0.6) 1px,transparent 1px);
-  background-size:4px 4px,7px 7px; background-position:0 0,2px 2px;
-  border-radius:inherit; animation:shimmer 3s linear infinite; opacity:0.7;
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(170,170,170,0.88) 1px, transparent 1px),
+    radial-gradient(circle, rgba(192,192,192,0.55) 1px, transparent 1px);
+  background-size: 4px 4px, 7px 7px;
+  background-position: 0 0, 2px 2px;
+  border-radius: inherit;
+  animation: shimmer 3s linear infinite;
+  opacity: 0.72;
 }
-@keyframes shimmer{0%{background-position:0 0,2px 2px;opacity:0.5}50%{opacity:1}100%{background-position:4px 4px,6px 6px;opacity:0.5}}
+@keyframes shimmer {
+  0%   { background-position: 0 0, 2px 2px;   opacity: 0.48; }
+  50%  { opacity: 1; }
+  100% { background-position: 4px 4px, 6px 6px; opacity: 0.48; }
+}
 .btn-main {
-  display:flex; align-items:center; justify-content:center;
-  width:100%; padding:17px 24px;
-  background:rgba(255,255,255,0.82); border:1.5px solid rgba(200,200,200,0.6);
-  border-radius:2px; cursor:pointer; position:relative; z-index:1;
-  backdrop-filter:blur(4px); transition:background 0.3s,border-color 0.3s; overflow:hidden;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 16px 24px;
+  background: rgba(255,255,255,0.80);
+  border: 1.5px solid rgba(195,192,188,0.55);
+  border-radius: 2px;
+  cursor: pointer; position: relative; z-index: 1;
+  backdrop-filter: blur(6px);
+  transition: background 0.25s, border-color 0.25s;
+  overflow: hidden;
 }
-.btn-main::before {
-  content:''; position:absolute; left:-100%; top:0; width:60%; height:100%;
-  background:linear-gradient(90deg,transparent,rgba(157,196,59,0.08),transparent);
-  transition:left 0.5s ease;
+.btn-main::after {
+  content: '';
+  position: absolute; left: -100%; top: 0;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(157,196,59,0.07), transparent);
+  transition: left 0.45s ease;
 }
-.btn-wrapper:hover .btn-main::before{left:150%}
-.btn-wrapper:hover .btn-main{background:rgba(255,255,255,0.95);border-color:rgba(157,196,59,0.35)}
-.btn-text { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; letter-spacing:3.5px; color:var(--text-dark); text-transform:uppercase; }
-.btn-corner { position:absolute; width:10px; height:10px; border-color:var(--silver); border-style:solid; z-index:2; transition:border-color 0.3s; }
-.btn-wrapper:hover .btn-corner{border-color:#9dc43b}
-.btn-corner.tl{top:2px;left:2px;border-width:1.5px 0 0 1.5px}
-.btn-corner.tr{top:2px;right:2px;border-width:1.5px 1.5px 0 0}
-.btn-corner.bl{bottom:2px;left:2px;border-width:0 0 1.5px 1.5px}
-.btn-corner.br{bottom:2px;right:2px;border-width:0 1.5px 1.5px 0}
-.btn-wrapper:nth-child(1){animation:fadeUp 0.6s 0.65s ease both}
-.btn-wrapper:nth-child(2){animation:fadeUp 0.6s 0.75s ease both}
-.btn-wrapper:nth-child(3){animation:fadeUp 0.6s 0.85s ease both}
-.btn-wrapper:nth-child(4){animation:fadeUp 0.6s 0.95s ease both}
-.btn-wrapper:nth-child(5){animation:fadeUp 0.6s 1.05s ease both}
+.btn-wrapper:hover .btn-main::after  { left: 150%; }
+.btn-wrapper:hover .btn-main { background: rgba(255,255,255,0.94); border-color: rgba(157,196,59,0.32); }
 
-/* SOCIAL */
-.social-row { margin-top:44px; display:flex; align-items:flex-end; justify-content:center; gap:32px; animation:fadeUp 1s 0.9s ease both; }
-.social-item { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; text-decoration:none; transition:transform 0.3s; }
-.social-item:hover{transform:translateY(-4px)}
-.social-icon { width:52px; height:52px; border-radius:50%; background:var(--text-dark); display:flex; align-items:center; justify-content:center; transition:background 0.3s,transform 0.3s; }
-.social-item:hover .social-icon{background:var(--green-dark);transform:scale(1.08)}
-.social-icon svg{width:26px;height:26px;fill:#fff}
-.social-label { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; color:var(--text-mid); text-transform:uppercase; }
+.btn-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12.5px; font-weight: 600;
+  letter-spacing: 3.5px; color: var(--text-dark);
+  text-transform: uppercase;
+}
+/* corner accents */
+.btn-corner {
+  position: absolute; width: 9px; height: 9px;
+  border-color: var(--silver); border-style: solid; z-index: 2;
+  transition: border-color 0.25s;
+}
+.btn-wrapper:hover .btn-corner { border-color: #9dc43b; }
+.btn-corner.tl { top:2px; left:2px;   border-width: 1.5px 0 0 1.5px; }
+.btn-corner.tr { top:2px; right:2px;  border-width: 1.5px 1.5px 0 0; }
+.btn-corner.bl { bottom:2px; left:2px;  border-width: 0 0 1.5px 1.5px; }
+.btn-corner.br { bottom:2px; right:2px; border-width: 0 1.5px 1.5px 0; }
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
-.ripple{position:absolute;border-radius:50%;background:rgba(157,196,59,0.22);transform:scale(0);animation:rippleAnim 0.6s ease-out forwards;pointer-events:none;}
-@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+/* stagger fade-in */
+.btn-wrapper:nth-child(1) { animation: fadeUp 0.55s 0.60s ease both; }
+.btn-wrapper:nth-child(2) { animation: fadeUp 0.55s 0.70s ease both; }
+.btn-wrapper:nth-child(3) { animation: fadeUp 0.55s 0.80s ease both; }
+.btn-wrapper:nth-child(4) { animation: fadeUp 0.55s 0.90s ease both; }
+.btn-wrapper:nth-child(5) { animation: fadeUp 0.55s 1.00s ease both; }
+
+/* ── SOCIAL ── */
+.social-row {
+  margin-top: 44px;
+  display: flex; align-items: flex-end; justify-content: center; gap: 30px;
+  animation: fadeUp 0.9s 1.05s ease both;
+}
+.social-item {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  cursor: pointer; text-decoration: none; transition: transform 0.25s;
+}
+.social-item:hover { transform: translateY(-4px); }
+.social-icon {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: #2e2e2e;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.25s, transform 0.25s;
+}
+.social-item:hover .social-icon { background: var(--green-dark); transform: scale(1.08); }
+.social-icon svg { width: 25px; height: 25px; fill: #fff; }
+.social-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9.5px; font-weight: 600; letter-spacing: 2px;
+  color: var(--text-mid); text-transform: uppercase;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp   { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: none; } }
+@keyframes fadeDown { from { opacity:0; transform: translateY(-18px); } to { opacity:1; transform: none; } }
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(157,196,59,0.20);
+  transform: scale(0);
+  animation: rippleAnim 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 </style>
 </head>
 <body>
 
-<!-- BRANCHES: z-index 0, no overflow:hidden, always behind page content -->
+<!-- BRANCHES: z-index 0, fixed corners, never clip anything -->
 <div class="branch branch-tr">
   <img src="branch.svg" alt="">
 </div>
@@ -198,12 +272,12 @@ body::before {
 
 <div class="page">
 
-  <!-- LOGO: no clipping container, logo shows fully -->
+  <!-- LOGO -->
   <div class="logo-section">
     <img class="logo-img" src="logo.svg" alt="easyMaths logo">
   </div>
 
-  <!-- NAME -->
+  <!-- NAME + TAGLINE -->
   <div class="name-section">
     <div class="name-main">Michel H'R</div>
     <div class="name-script">clases de matematica</div>
@@ -218,25 +292,61 @@ body::before {
 
   <!-- BUTTONS -->
   <div class="buttons-grid">
-    <div class="btn-wrapper"><div class="btn-frame"></div><button class="btn-main" onclick="ripple(event,this)"><span class="btn-corner tl"></span><span class="btn-corner tr"></span><span class="btn-corner bl"></span><span class="btn-corner br"></span><span class="btn-text">Horarios</span></button></div>
-    <div class="btn-wrapper"><div class="btn-frame"></div><button class="btn-main" onclick="ripple(event,this)"><span class="btn-corner tl"></span><span class="btn-corner tr"></span><span class="btn-corner bl"></span><span class="btn-corner br"></span><span class="btn-text">Estudiantes</span></button></div>
-    <div class="btn-wrapper"><div class="btn-frame"></div><button class="btn-main" onclick="ripple(event,this)"><span class="btn-corner tl"></span><span class="btn-corner tr"></span><span class="btn-corner bl"></span><span class="btn-corner br"></span><span class="btn-text">Cotiza a Domicilio</span></button></div>
-    <div class="btn-wrapper"><div class="btn-frame"></div><button class="btn-main" onclick="ripple(event,this)"><span class="btn-corner tl"></span><span class="btn-corner tr"></span><span class="btn-corner bl"></span><span class="btn-corner br"></span><span class="btn-text">Catalogo 2026</span></button></div>
-    <div class="btn-wrapper"><div class="btn-frame"></div><button class="btn-main" onclick="ripple(event,this)"><span class="btn-corner tl"></span><span class="btn-corner tr"></span><span class="btn-corner bl"></span><span class="btn-corner br"></span><span class="btn-text">Referencias</span></button></div>
+    <div class="btn-wrapper"><div class="btn-frame"></div>
+      <button class="btn-main" onclick="ripple(event,this)">
+        <span class="btn-corner tl"></span><span class="btn-corner tr"></span>
+        <span class="btn-corner bl"></span><span class="btn-corner br"></span>
+        <span class="btn-text">Horarios</span>
+      </button>
+    </div>
+    <div class="btn-wrapper"><div class="btn-frame"></div>
+      <button class="btn-main" onclick="ripple(event,this)">
+        <span class="btn-corner tl"></span><span class="btn-corner tr"></span>
+        <span class="btn-corner bl"></span><span class="btn-corner br"></span>
+        <span class="btn-text">Estudiantes</span>
+      </button>
+    </div>
+    <div class="btn-wrapper"><div class="btn-frame"></div>
+      <button class="btn-main" onclick="ripple(event,this)">
+        <span class="btn-corner tl"></span><span class="btn-corner tr"></span>
+        <span class="btn-corner bl"></span><span class="btn-corner br"></span>
+        <span class="btn-text">Cotiza a Domicilio</span>
+      </button>
+    </div>
+    <div class="btn-wrapper"><div class="btn-frame"></div>
+      <button class="btn-main" onclick="ripple(event,this)">
+        <span class="btn-corner tl"></span><span class="btn-corner tr"></span>
+        <span class="btn-corner bl"></span><span class="btn-corner br"></span>
+        <span class="btn-text">Catálogo 2026</span>
+      </button>
+    </div>
+    <div class="btn-wrapper"><div class="btn-frame"></div>
+      <button class="btn-main" onclick="ripple(event,this)">
+        <span class="btn-corner tl"></span><span class="btn-corner tr"></span>
+        <span class="btn-corner bl"></span><span class="btn-corner br"></span>
+        <span class="btn-text">Referencias</span>
+      </button>
+    </div>
   </div>
 
   <!-- SOCIAL -->
   <div class="social-row">
     <a class="social-item" href="#" title="WhatsApp Peru">
-      <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-      <span class="social-label">Peru</span>
+      <div class="social-icon">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <span class="social-label">Perú</span>
     </a>
     <a class="social-item" href="#" title="Facebook">
-      <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="social-icon">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </div>
       <span class="social-label">Facebook</span>
     </a>
     <a class="social-item" href="#" title="WhatsApp Italia">
-      <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+      <div class="social-icon">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
       <span class="social-label">Italia</span>
     </a>
   </div>
@@ -244,11 +354,13 @@ body::before {
 </div>
 
 <script>
-function ripple(e,btn){
-  const r=document.createElement('span'); r.className='ripple';
-  const rc=btn.getBoundingClientRect(), sz=Math.max(rc.width,rc.height);
-  r.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-rc.left-sz/2)+'px;top:'+(e.clientY-rc.top-sz/2)+'px';
-  btn.appendChild(r); setTimeout(()=>r.remove(),600);
+function ripple(e, btn) {
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const rc = btn.getBoundingClientRect(), sz = Math.max(rc.width, rc.height);
+  r.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-rc.left-sz/2)+'px;top:'+(e.clientY-rc.top-sz/2)+'px';
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
 }
 </script>
 </body>
