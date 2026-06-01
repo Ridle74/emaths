@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1366">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>easyMaths - Michel H'R</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 @font-face {
   font-family: 'Jonathan';
@@ -12,110 +12,308 @@
   font-weight: normal; font-style: normal;
 }
 
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  width: 1366px;
-  min-height: 2450px;
-  overflow-x: hidden;
-  overflow-y: auto;
+:root {
+  --green:       #85cc00;
+  --green-dark:  #6a9e00;
+  --green-muted: #9dc43b;
+  --cream:       rgba(255,254,250,0.88);
+  --border:      rgba(175,170,158,0.50);
+  --text-dark:   #2a2a2a;
+  --text-mid:    #3a3830;
+  --text-soft:   #555;
+  --nav-bg:      rgba(248,246,240,0.97);
+  --nav-border:  rgba(157,196,59,0.22);
+  --nav-h:       64px;
 }
+
+html { scroll-behavior: smooth; }
+
 body {
-  width: 1366px;
-  min-height: 2450px;
-  position: relative;
-  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  background: #f5f3ee;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
+/* ============================================================
+   TOP NAVIGATION BAR
+   ============================================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 1000;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 1px 20px rgba(133,204,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(16px, 4vw, 48px);
+  gap: 16px;
+}
 
-/* BRANCHES: z-index 1, glued to background */
+/* Brand mark in nav */
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.topbar-brand-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(133,204,0,0.5);
+}
+.topbar-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text-dark);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Center spacer */
+.topbar-spacer { flex: 1; }
+
+/* Login label (small caps descriptor) */
+.topbar-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 500;
+  flex-shrink: 0;
+  display: none;
+}
+@media (min-width: 600px) { .topbar-label { display: block; } }
+
+/* Login buttons group */
+.login-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 24px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+.btn-login svg {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.22s;
+}
+.btn-login:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+  background: rgba(133,204,0,0.07);
+  box-shadow: 0 2px 10px rgba(133,204,0,0.15);
+  transform: translateY(-1px);
+}
+.btn-login:hover svg { opacity: 1; }
+
+/* Primary login — Admin */
+.btn-login.admin {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(133,204,0,0.28);
+}
+.btn-login.admin svg { opacity: 1; filter: brightness(10); }
+.btn-login.admin:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(133,204,0,0.38);
+}
+
+/* Mobile: hide text, show only icon */
+.btn-login .btn-label { display: inline; }
+@media (max-width: 480px) {
+  .btn-login { padding: 7px 11px; }
+  .btn-login .btn-label { display: none; }
+  .btn-login svg { width: 16px; height: 16px; }
+}
+
+/* Divider between nav buttons */
+.topbar-divider {
+  width: 1px; height: 24px;
+  background: var(--nav-border);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   MARBLE BACKGROUND — fills full page
+   ============================================================ */
+.marble-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.marble-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* ============================================================
+   BRANCHES
+   ============================================================ */
 .branch { position: absolute; pointer-events: none; z-index: 1; }
-.branch-tr { top: 0; right: 0; width: 400px; animation: breatheR 6s ease-in-out infinite; transform-origin: top right; }
-.branch-bl { bottom: 0; left: 0; width: 400px; animation: breatheL 7s ease-in-out infinite; transform-origin: bottom left; }
+.branch-tr {
+  top: 0; right: 0;
+  width: clamp(200px, 28vw, 380px);
+  transform-origin: top right;
+}
+.branch-bl {
+  bottom: 0; left: 0;
+  width: clamp(200px, 28vw, 380px);
+  transform-origin: bottom left;
+}
 .branch img { width: 100%; height: auto; display: block; }
 .branch-bl img { transform: rotate(180deg); }
-@keyframes breatheR { 0%,100%{transform:scale(1)} 50%{transform:scale(1.012)} }
-@keyframes breatheL { 0%,100%{transform:scale(1)} 50%{transform:scale(1.012)} }
 
-/* PAGE: z-index 3 */
+/* ============================================================
+   MAIN PAGE LAYOUT
+   ============================================================ */
 .page {
-  position: relative; z-index: 3;
-  min-height: 2450px;
-  padding-bottom: 163px;
-  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  padding-top: calc(var(--nav-h) + clamp(40px, 8vh, 110px));
+  padding-bottom: clamp(48px, 8vh, 120px);
+  padding-left: clamp(16px, 5vw, 40px);
+  padding-right: clamp(16px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* LOGO */
+/* ============================================================
+   LOGO
+   ============================================================ */
 .logo-section {
-  margin-top: 163px;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: fadeDown 0.9s ease both;
 }
 .logo-img {
-  width: 560px; height: auto; display: block;
+  width: clamp(220px, 42vw, 520px);
+  height: auto;
+  display: block;
   filter: drop-shadow(0 6px 26px rgba(100,130,20,0.17));
   animation: logoFloat 2.2s ease-in-out infinite;
 }
-@keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+@keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
 
-/* NAME SECTION — tight together like reference */
+/* ============================================================
+   NAME SECTION
+   ============================================================ */
 .name-section {
-  margin-top: 163px; text-align: center;
+  margin-top: clamp(28px, 5vh, 80px);
+  text-align: center;
   animation: fadeUp 0.9s 0.25s ease both;
 }
-/* Michel H'R: 190px matching reference proportion */
 .name-main {
   font-family: 'Playfair Display', serif;
-  font-size: 190px; font-weight: 400; color: #2a2a2a;
-  letter-spacing: -2px; line-height: 0.95;
+  font-size: clamp(64px, 13vw, 160px);
+  font-weight: 400;
+  color: var(--text-dark);
+  letter-spacing: -1px;
+  line-height: 0.95;
 }
-/* clases de matematica: Jonathan, 157px, #85cc00, sits right under Michel H'R */
 .name-script {
   font-family: 'Jonathan', cursive;
-  font-size: 157px; font-weight: 400; color: #85cc00;
-  line-height: 1.05; margin-top: -10px;
+  font-size: clamp(52px, 11vw, 132px);
+  font-weight: 400;
+  color: var(--green);
+  line-height: 1.05;
+  margin-top: -6px;
   animation: fadeUp 0.9s 0.35s ease both;
 }
 
-/* DIVIDER */
+/* ============================================================
+   DIVIDER
+   ============================================================ */
 .divider {
-  width: 240px; margin: 32px 0 32px;
-  display: flex; align-items: center; gap: 16px;
+  width: clamp(160px, 20vw, 240px);
+  margin: clamp(20px, 3vh, 36px) 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   animation: fadeUp 0.9s 0.4s ease both;
 }
 .divider-line { flex: 1; height: 1px; background: #bfbcb7; }
 .divider-dot {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: #9dc43b; box-shadow: 0 0 10px rgba(157,196,59,0.4);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--green-muted);
+  box-shadow: 0 0 10px rgba(157,196,59,0.4);
 }
 
-/* BUTTONS — organic leaf/petal style
-   Design concept: each button looks like a smooth stone or leaf pressed flat —
-   warm off-white fill, a single clean border line (no dots, no glitter),
-   large corner radius, subtle shadow, soft green accent on hover.
-   The SVG leaf-vein decoration on left/right edges adds the organic touch.    */
+/* ============================================================
+   BUTTONS GRID
+   ============================================================ */
 .buttons-grid {
-  width: 874px; display: flex; flex-direction: column; gap: 34px;
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.5vh, 28px);
 }
 
 .btn-wrapper {
   position: relative;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
-.btn-wrapper:hover  { transform: translateY(-5px); filter: drop-shadow(0 8px 20px rgba(133,204,0,0.18)); }
+.btn-wrapper:hover  { transform: translateY(-4px); filter: drop-shadow(0 8px 20px rgba(133,204,0,0.18)); }
 .btn-wrapper:active { transform: scale(0.98); }
 
 .btn-main {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; padding: 48px 40px;
-  background: rgba(255,254,250,0.82);
-  /* Single clean line — warm off-white with slight warm tint */
-  border: 1.8px solid rgba(175,170,158,0.55);
-  /* Organic: asymmetric radius like a smooth river stone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 40px);
+  background: var(--cream);
+  border: 1.8px solid var(--border);
   border-radius: 18px 28px 18px 28px;
-  cursor: pointer; position: relative; z-index: 1;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
   backdrop-filter: blur(10px);
-  /* Layered shadows: soft depth + subtle inner highlight */
   box-shadow:
     0 2px 0 rgba(255,255,255,0.9),
     0 4px 18px rgba(0,0,0,0.06),
@@ -123,8 +321,6 @@ body {
   transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, border-radius 0.4s;
   overflow: hidden;
 }
-
-/* Leaf-vein shimmer on hover */
 .btn-main::before {
   content: '';
   position: absolute; inset: 0;
@@ -135,8 +331,6 @@ body {
   border-radius: inherit;
 }
 .btn-wrapper:hover .btn-main::before { opacity: 1; }
-
-/* Sweep shimmer */
 .btn-main::after {
   content: '';
   position: absolute; left: -120%; top: 0;
@@ -154,80 +348,308 @@ body {
     0 8px 28px rgba(133,204,0,0.12),
     inset 0 1px 3px rgba(255,255,255,0.9);
 }
-
 .btn-text {
   font-family: 'Montserrat', sans-serif;
-  font-size: 26px; font-weight: 500;
-  letter-spacing: 6px; color: #3a3830;
+  font-size: clamp(13px, 2.2vw, 22px);
+  font-weight: 500;
+  letter-spacing: clamp(3px, 0.8vw, 6px);
+  color: var(--text-mid);
   text-transform: uppercase;
   position: relative; z-index: 1;
 }
 
-/* Small organic leaf marks at corners — just two diagonal lines, like leaf tips */
+/* Leaf corners */
 .btn-leaf {
-  position: absolute; width: 22px; height: 22px;
-  opacity: 0.35; transition: opacity 0.3s;
+  position: absolute; width: 18px; height: 18px;
+  opacity: 0.30; transition: opacity 0.3s;
   pointer-events: none; z-index: 2;
 }
-.btn-wrapper:hover .btn-leaf { opacity: 0.7; }
-.btn-leaf.tl { top: 8px; left: 14px; }
-.btn-leaf.tr { top: 8px; right: 14px; transform: scaleX(-1); }
-.btn-leaf.bl { bottom: 8px; left: 14px; transform: scaleY(-1); }
-.btn-leaf.br { bottom: 8px; right: 14px; transform: scale(-1); }
+.btn-wrapper:hover .btn-leaf { opacity: 0.65; }
+.btn-leaf.tl { top: 7px; left: 12px; }
+.btn-leaf.tr { top: 7px; right: 12px; transform: scaleX(-1); }
+.btn-leaf.bl { bottom: 7px; left: 12px; transform: scaleY(-1); }
+.btn-leaf.br { bottom: 7px; right: 12px; transform: scale(-1); }
 
+/* Staggered entrance */
 .btn-wrapper:nth-child(1) { animation: fadeUp 0.55s 0.55s ease both; }
 .btn-wrapper:nth-child(2) { animation: fadeUp 0.55s 0.65s ease both; }
 .btn-wrapper:nth-child(3) { animation: fadeUp 0.55s 0.75s ease both; }
 .btn-wrapper:nth-child(4) { animation: fadeUp 0.55s 0.85s ease both; }
 .btn-wrapper:nth-child(5) { animation: fadeUp 0.55s 0.95s ease both; }
 
-/* SOCIAL */
+/* ============================================================
+   SOCIAL ROW
+   ============================================================ */
 .social-row {
-  margin-top: 163px;
-  display: flex; align-items: flex-start; justify-content: center; gap: 80px;
+  margin-top: clamp(40px, 7vh, 120px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(28px, 5vw, 80px);
+  flex-wrap: wrap;
   animation: fadeUp 0.9s 1.0s ease both;
 }
 .social-item {
-  display: flex; flex-direction: column; align-items: center; gap: 16px;
-  cursor: pointer; text-decoration: none; transition: transform 0.25s;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 12px;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.25s;
 }
 .social-item:hover { transform: translateY(-8px); }
 .social-icon {
-  width: 112px; height: 112px; border-radius: 50%; background: #2e2e2e;
+  width: clamp(64px, 10vw, 96px);
+  height: clamp(64px, 10vw, 96px);
+  border-radius: 50%;
+  background: #2e2e2e;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.25s, transform 0.25s;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .social-item:hover .social-icon { background: #6a7c2a; transform: scale(1.08); }
-.social-icon svg { width: 58px; height: 58px; fill: #fff; }
+.social-icon svg {
+  width: clamp(30px, 4.5vw, 50px);
+  height: clamp(30px, 4.5vw, 50px);
+  fill: #fff;
+}
 .social-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 20px; font-weight: 600; letter-spacing: 3.5px;
-  color: #555; text-transform: uppercase;
+  font-size: clamp(10px, 1.5vw, 17px);
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  color: var(--text-soft);
+  text-transform: uppercase;
 }
 
-@keyframes fadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-@keyframes fadeDown { from{opacity:0;transform:translateY(-28px)} to{opacity:1;transform:none} }
+/* ============================================================
+   MODAL (login panel)
+   ============================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 9000;
+  background: rgba(30,28,22,0.55);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+.modal-overlay.open { display: flex; }
+
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal-box {
+  background: rgba(252,250,244,0.98);
+  border-radius: 20px 28px 20px 28px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18), 0 4px 16px rgba(133,204,0,0.12);
+  width: min(92vw, 380px);
+  padding: 36px 32px 32px;
+  position: relative;
+  animation: slideUp 0.28s ease both;
+}
+@keyframes slideUp { from{transform:translateY(24px);opacity:0} to{transform:none;opacity:1} }
+
+.modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none;
+  font-size: 20px; color: #aaa; cursor: pointer;
+  line-height: 1; padding: 4px 8px;
+  border-radius: 8px; transition: color 0.2s, background 0.2s;
+}
+.modal-close:hover { color: var(--text-dark); background: rgba(0,0,0,0.06); }
+
+.modal-role-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 4px 14px; border-radius: 20px;
+  background: rgba(133,204,0,0.12);
+  border: 1px solid rgba(133,204,0,0.3);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--green-dark);
+  margin-bottom: 18px;
+}
+.modal-role-badge svg { width: 12px; height: 12px; }
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 400;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.modal-subtitle {
+  font-size: 12px; color: #888;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+}
+
+.modal-field { margin-bottom: 16px; }
+.modal-field label {
+  display: block;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: #888; margin-bottom: 7px;
+}
+.modal-field input {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.8);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px; color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-field input:focus {
+  border-color: var(--green-muted);
+  box-shadow: 0 0 0 3px rgba(133,204,0,0.12);
+}
+
+.modal-forgot {
+  text-align: right; margin-top: -8px; margin-bottom: 20px;
+}
+.modal-forgot a {
+  font-size: 11px; color: #aaa;
+  text-decoration: none; letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+.modal-forgot a:hover { color: var(--green-dark); }
+
+.modal-submit {
+  width: 100%;
+  padding: 13px;
+  border-radius: 14px 20px 14px 20px;
+  border: none;
+  background: var(--green);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(133,204,0,0.3);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.modal-submit:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(133,204,0,0.38);
+}
+.modal-submit:active { transform: scale(0.98); }
+
+.modal-roles-switch {
+  margin-top: 22px;
+  display: flex; gap: 8px; justify-content: center;
+  flex-wrap: wrap;
+}
+.role-chip {
+  padding: 5px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: #999; cursor: pointer;
+  transition: all 0.2s;
+}
+.role-chip:hover, .role-chip.active {
+  border-color: var(--green);
+  color: var(--green-dark);
+  background: rgba(133,204,0,0.08);
+}
+
+/* ============================================================
+   KEYFRAMES UTILITIES
+   ============================================================ */
+@keyframes fadeUp   { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-24px)} to{opacity:1;transform:none} }
+
 .ripple {
   position: absolute; border-radius: 50%;
   background: rgba(133,204,0,0.18); transform: scale(0);
   animation: rippleAnim 0.6s ease-out forwards; pointer-events: none;
 }
 @keyframes rippleAnim { to{transform:scale(4);opacity:0} }
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width: 500px) {
+  .topbar-divider { display: none; }
+  .login-group { gap: 6px; }
+}
 </style>
 </head>
 <body>
 
+<!-- FULL PAGE WRAPPER: contains marble + branches + content as one scrollable unit -->
+<div id="pageWrapper" style="position:relative; min-height:100vh; width:100%; overflow:hidden;">
 
-
-<!-- MARBLE BACKGROUND: real high-res marble photo, z-index 0 -->
-<div id="marbleBg" style="position:absolute;top:0;left:0;width:1366px;height:2450px;z-index:0;pointer-events:none;overflow:hidden;">
-  <img src="marble_bg.svg" style="width:1366px;height:2450px;object-fit:cover;object-position:center center;display:block;" alt="">
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <div class="modal-role-badge">
+      <svg id="modalBadgeIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      <span id="modalRoleLabel">Estudiante</span>
+    </div>
+    <div class="modal-title" id="modalTitle">Bienvenido</div>
+    <div class="modal-subtitle" id="modalSubtitle">Ingresa tus credenciales para continuar</div>
+    <div class="modal-field">
+      <label>Usuario / Correo</label>
+      <input type="email" id="modalEmail" placeholder="tucorreo@email.com" autocomplete="email">
+    </div>
+    <div class="modal-field">
+      <label>Contraseña</label>
+      <input type="password" id="modalPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="modal-forgot"><a href="#">¿Olvidaste tu contraseña?</a></div>
+    <button class="modal-submit" onclick="handleLogin()">Iniciar sesión</button>
+    <div class="modal-roles-switch">
+      <button class="role-chip active" data-role="estudiante" onclick="switchRole(this)">Estudiante</button>
+      <button class="role-chip" data-role="cliente" onclick="switchRole(this)">Cliente</button>
+      <button class="role-chip" data-role="admin" onclick="switchRole(this)">Admin</button>
+    </div>
+  </div>
 </div>
 
+<!-- TOP NAVIGATION BAR -->
+<nav class="topbar">
+  <a class="topbar-brand" href="#">
+    <div class="topbar-brand-dot"></div>
+    <span class="topbar-brand-name">easyMaths</span>
+  </a>
+
+  <div class="topbar-spacer"></div>
+
+  <span class="topbar-label">Acceso</span>
+
+  <div class="login-group">
+    <button class="btn-login" onclick="openModal('estudiante')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+      <span class="btn-label">Estudiante</span>
+    </button>
+    <button class="btn-login" onclick="openModal('cliente')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span class="btn-label">Cliente</span>
+    </button>
+    <div class="topbar-divider"></div>
+    <button class="btn-login admin" onclick="openModal('admin')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l4 1.82V11c0 3.38-2.34 6.53-4 7.44C10.34 17.53 8 14.38 8 11V6.82L12 5z"/></svg>
+      <span class="btn-label">Admin</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MARBLE BACKGROUND -->
+<div class="marble-bg">
+  <img src="marble_bg.svg" alt="">
+</div>
+
+<!-- BRANCHES -->
 <div class="branch branch-tr"><img src="branch.svg" alt=""></div>
 <div class="branch branch-bl"><img src="branch.svg" alt=""></div>
 
+<!-- MAIN CONTENT -->
 <div class="page">
 
   <div class="logo-section">
@@ -245,7 +667,7 @@ body {
     <div class="divider-line"></div>
   </div>
 
-  <!-- SVG leaf tip used inline for btn-leaf corners -->
+  <!-- Leaf SVG symbol -->
   <svg style="display:none">
     <symbol id="leaf-tip" viewBox="0 0 22 22">
       <path d="M2,20 Q2,2 20,2 Q20,12 11,16 Q6,18 2,20Z" fill="#85cc00"/>
@@ -301,7 +723,7 @@ body {
   </div>
 
   <div class="social-row">
-    <a class="social-item" href="#" title="WhatsApp Peru">
+    <a class="social-item" href="#" title="WhatsApp Per&#250;">
       <div class="social-icon">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </div>
@@ -324,15 +746,82 @@ body {
 </div>
 
 <script>
+/* ---- Ripple ---- */
 function ripple(e, btn) {
   const r = document.createElement('span'); r.className = 'ripple';
   const rc = btn.getBoundingClientRect(), sz = Math.max(rc.width, rc.height);
   r.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-rc.left-sz/2)+'px;top:'+(e.clientY-rc.top-sz/2)+'px';
   btn.appendChild(r); setTimeout(() => r.remove(), 600);
 }
+
+/* ---- Login Modal ---- */
+const roleConfig = {
+  admin:      { label: 'Administrador', title: 'Panel de Administración', sub: 'Acceso exclusivo para administradores', icon: 'shield' },
+  estudiante: { label: 'Estudiante',     title: 'Mi Portal de Clases',      sub: 'Ingresa para ver tus horarios y materiales', icon: 'student' },
+  cliente:    { label: 'Cliente',        title: 'Portal de Clientes',       sub: 'Gestiona tus cotizaciones y reservas', icon: 'people' }
+};
+const icons = {
+  shield:  '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l4 1.82V11c0 3.38-2.34 6.53-4 7.44C10.34 17.53 8 14.38 8 11V6.82L12 5z"/>',
+  student: '<path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>',
+  people:  '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>' 
+};
+
+function openModal(role) {
+  const cfg = roleConfig[role];
+  document.getElementById('modalRoleLabel').textContent = cfg.label;
+  document.getElementById('modalTitle').textContent = cfg.title;
+  document.getElementById('modalSubtitle').textContent = cfg.sub;
+  document.getElementById('modalBadgeIcon').innerHTML = icons[cfg.icon];
+  document.getElementById('modalEmail').value = '';
+  document.getElementById('modalPass').value = '';
+  // Update chips
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.toggle('active', c.dataset.role === role));
+  document.getElementById('loginModal').classList.add('open');
+  setTimeout(() => document.getElementById('modalEmail').focus(), 100);
+}
+
+function closeModal() { document.getElementById('loginModal').classList.remove('open'); }
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('loginModal')) closeModal();
+}
+
+function switchRole(chip) {
+  const role = chip.dataset.role;
+  const cfg = roleConfig[role];
+  document.getElementById('modalRoleLabel').textContent = cfg.label;
+  document.getElementById('modalTitle').textContent = cfg.title;
+  document.getElementById('modalSubtitle').textContent = cfg.sub;
+  document.getElementById('modalBadgeIcon').innerHTML = icons[cfg.icon];
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.toggle('active', c === chip));
+}
+
+function handleLogin() {
+  const email = document.getElementById('modalEmail').value;
+  const pass  = document.getElementById('modalPass').value;
+  if (!email || !pass) {
+    document.getElementById('modalEmail').style.borderColor = '#e07070';
+    document.getElementById('modalPass').style.borderColor = '#e07070';
+    setTimeout(() => {
+      document.getElementById('modalEmail').style.borderColor = '';
+      document.getElementById('modalPass').style.borderColor = '';
+    }, 1500);
+    return;
+  }
+  const btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Verificando...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Iniciar sesión';
+    btn.disabled = false;
+  }, 1500);
+}
+
+// ESC closes modal
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 
-
+</div><!-- /pageWrapper -->
 
 </body>
 </html>
